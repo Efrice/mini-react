@@ -1,4 +1,8 @@
-// v1
-const textEL = document.createTextNode("app")
+// v1 pro
+const app = document.createElement("div")
+app.id = "app"
+document.getElementById("root").appendChild(app)
 
-document.getElementById("root").appendChild(textEL)
+const textEL = document.createTextNode("")
+textEL.nodeValue = "app"
+app.appendChild(textEL)
