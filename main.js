@@ -1,4 +1,4 @@
-// v4
+// v5
 function createTextVNode(text) {
   return {
     type: "TEXT_ELEMENT",
@@ -41,4 +41,11 @@ function render(VNode, container) {
 }
 
 const app = createElementVNode("div", { id: "app" }, "hello ", "world!")
-render(app, document.getElementById("root"))
+const ReactDOM = {
+  createRoot: (container) => {
+    return {
+      render: (VNode) => render(VNode, container),
+    }
+  },
+}
+ReactDOM.createRoot(document.getElementById("root")).render(app)
