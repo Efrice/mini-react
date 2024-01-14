@@ -1,19 +1,26 @@
-// v2
-const textVNode = {
-  type: "TEXT_ELEMENT",
-  props: {
-    nodeValue: "app",
-    children: [],
-  },
+// v3
+function createTextVNode(text) {
+  return {
+    type: "TEXT_ELEMENT",
+    props: {
+      nodeValue: text,
+      children: [],
+    },
+  }
 }
 
-const VNode = {
-  type: "div",
-  props: {
-    id: "app",
-    children: [textVNode],
-  },
+function createElementVNode(type, props, ...children) {
+  return {
+    type,
+    props: {
+      ...props,
+      children,
+    },
+  }
 }
+
+const textVNode = createTextVNode("app")
+const VNode = createElementVNode("div", { id: "app" }, textVNode)
 
 const app = document.createElement(VNode.type)
 app.id = VNode.props.id
