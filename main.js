@@ -1,4 +1,4 @@
-// v3
+// v4
 function createTextVNode(text) {
   return {
     type: "TEXT_ELEMENT",
@@ -14,18 +14,31 @@ function createElementVNode(type, props, ...children) {
     type,
     props: {
       ...props,
-      children,
+      children: children.map((child) =>
+        typeof child === "string" ? createTextVNode(child) : child
+      ),
     },
   }
 }
 
-const textVNode = createTextVNode("app")
-const VNode = createElementVNode("div", { id: "app" }, textVNode)
+function render(VNode, container) {
+  const dom =
+    VNode.type === "TEXT_ELEMENT"
+      ? document.createTextNode("")
+      : document.createElement(VNode.type)
 
-const app = document.createElement(VNode.type)
-app.id = VNode.props.id
-document.getElementById("root").appendChild(app)
+  Object.keys(VNode.props).forEach((key) => {
+    if (key !== "children") {
+      dom[key] = VNode.props[key]
+    }
+  })
 
-const textEL = document.createTextNode("")
-textEL.nodeValue = textVNode.props.nodeValue
-app.appendChild(textEL)
+  VNode.props.children.forEach((child) => {
+    render(child, dom)
+  })
+
+  container.appendChild(dom)
+}
+
+const app = createElementVNode("div", { id: "app" }, "hello ", "world!")
+render(app, document.getElementById("root"))
